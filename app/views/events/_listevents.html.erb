@@ -1,0 +1,47 @@
+<p id="notice">
+	<%= notice %>
+</p>
+
+<%unless @events.nil?%>
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>Title</th>
+			<th>Description:</th>
+			<th>Start Time</th>
+			<th>End Time</th>
+		</tr>
+	</thead>
+	<tbody>
+		<%@events.each_with_index do |event,i|%>
+		<tr>
+			<%if !current_user.nil? && (current_user == event.user || current_user.role == ENV["ROLE_ADMIN"])%>
+			<td><a id="show_list_events" href="#" onclick="show_list_events_details(<%=event.to_json%>); return false;"><%= event.title.humanize %></a></td>
+           <%else%>
+           <td><a id="show_list_events" href="#" onclick="showEventDetailsUser(<%=event.to_json%>); return false;"><%= event.title.humanize %></a></td>
+           <%end%>
+			<td><%= event.description %></td>
+
+			<td><%= event.starttime.strftime("%d/%m/%Y %I:%M %p ") %></td>
+
+			<td><%= event.endtime.strftime("%d/%m/%Y %I:%M %p ") %></td>
+		</tr>
+
+		<%end%>
+	</tbody>
+</table>
+<%= will_paginate @events%>
+<%else%>
+<h3>No Events</h3>
+<%end%>
+
+	<script type="text/javascript">
+  jQuery("div.pagination a").click(function () {  	
+     $.get(this.href,function(data){
+     	$("#eventlisting").empty();
+		$("#eventlisting").html(data);
+     });
+    return false;
+  });;
+	
+</script>

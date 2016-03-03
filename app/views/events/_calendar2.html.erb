@@ -1,0 +1,63 @@
+<br>
+
+<script>
+ $(document).ready(function(){
+      $('#calendar_user').fullCalendar({
+          editable: false,
+          header: {
+              left: 'prev,next today',
+              center: 'title',
+              right: 'month,agendaWeek,agendaDay'
+          },
+          defaultView: 'month',
+          height: 500,
+          slotMinutes: 15,
+          loading: function(bool){
+              if (bool) 
+                  $('#loading').show();
+              else 
+                  $('#loading').hide();
+          },
+          events : {
+				url : '/events/get_events.json',
+				data : {
+					"user_id" : <%=@profile.user_id%>
+					},
+				type : 'GET',
+				error : function() {
+					alert('there was an error while fetching events!');
+				},
+				// color: 'yellow',   // a non-ajax option
+				// textColor: 'black' // a non-ajax option
+			},
+          timeFormat: 'h:mm t{ - h:mm t} ',
+          dragOpacity: "0.5",
+                
+          eventClick: function(event, jsEvent, view){
+              showEventDetailsUser(event);
+          },
+      
+      
+      
+      
+      });
+  });
+</script>
+<div>
+  <div id='calendar_user'>
+  </div>
+</div>
+
+<!-- div id = "desc_dialog" class="dialog" style ="display:none;">
+<div id = "event_desc"></div>
+<br/>
+<br/>
+<div id = "event_actions">
+<span id = "edit_event"></span>
+<span id = "delete_event"></span>
+</div>
+</div> -->
+
+<!-- <div id = "create_event_dialog" class="dialog" style ="display:none;">
+<div id = "create_event"></div>
+</div> -->

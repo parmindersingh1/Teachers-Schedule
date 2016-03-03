@@ -1,0 +1,78 @@
+
+<p>
+	<%= link_to 'Create Schedule', new_event_url,:data=>{:userId => @user_id }, :id => 'new_event', :class=>'btn btn-primary'  %>
+</p>
+
+
+
+<ul class="nav nav-tabs" id="myTab">
+	<li class="active">
+		<a href="#eventcalendar" data-target="#eventcalendar" data-toggle="tab"><i class="fa fa-clock-o"></i> Calendar</a>
+
+	</li>
+	<li>
+		<a href="#eventlisting" id="eventlist" data-target="#eventlisting" data-toggle="tab"><i class="fa fa-user"></i>Listing</a>
+
+	</li>
+</ul>
+<input type="hidden" id="event_user_id" value="<%=@user_id%>">
+<div class="tab-content">
+	<div class="tab-pane active" id="eventcalendar">		
+		<%= render :partial=>"calendar"%>		
+	</div>
+	<div class="tab-pane" id="eventlisting">
+		<%= render :partial=>"listevents"%>
+	</div> 
+</div>
+
+<div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+				<h4 class="modal-title" id="eventModalLabel"></h4>
+			</div>
+			<div id="create_event" class="modal-body">
+				---
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">
+					Close
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="desc_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+				<h4 class="modal-title" id="desc_dialogLabel"></h4>
+			</div>
+			<div class="modal-body">
+
+				<div id = "event_desc"></div>
+				<div class="row">
+					<div class="col-sm-2"></div>
+					<div class="col-sm-8">
+						<div id = "event_actions">
+							<span id = "edit_event"></span>
+							<span id = "delete_event"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">
+					Close
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

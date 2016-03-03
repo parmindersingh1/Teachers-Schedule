@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TaskList</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+	<%= render "layouts/header"%>
+<div class="container">
+	       <% if notice %>
+			<div class="alert  alert alert-warning">
+				<a href="#" class="close" data-dismiss="alert">&times;</a>
+				<%= raw(notice.titleize) %>
+			</div>
+			<% end %>
+			<% if alert %>
+			<div class="alert  alert-danger">
+				<a href="#" class="close" data-dismiss="alert">&times;</a>
+				<%= raw(alert.titleize) %>
+			</div>
+			<% end %>
+<%= yield %>
+</div>
+<%= render "layouts/footer"%>
+<script type="text/javascript">
+			authenticity_token = "<%= form_authenticity_token %>"
+			// var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+			// document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+</body>
+</html>

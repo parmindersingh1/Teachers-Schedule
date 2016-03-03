@@ -1,0 +1,225 @@
+function moveEvent(event, delta) {
+	jQuery.ajax({
+		data : 'id=' + event.id + '&title=' + event.title + '&hour_delta=' + delta.hours() + '&minute_delta=' + delta.minutes(),
+		dataType : 'script',
+		type : 'post',
+		url : "/events/move"
+	});
+}
+
+function resizeEvent(event, delta) {
+	jQuery.ajax({
+		data : 'id=' + event.id + '&title=' + event.title + '&hour_delta=' + delta.hours() + '&minute_delta=' + delta.minutes(),
+		dataType : 'script',
+		type : 'post',
+		url : "/events/resize"
+	});
+}
+
+function showEventDetails(event) {
+	$("#desc_dialog").find('.modal-header').show();
+	//$('#event_desc').html(event.description);
+	$('#edit_event').html("<a href = 'javascript:void(0);' onclick ='editEvent(" + event.id + ")'>Edit</a>");
+	
+		title = "<h3>"+event.title+"</h3>";
+		title += "<h4>Class: "+event.description.location+"</h4>";
+		title += "<h4>Date: "+moment(event.start).format('MM/DD/YYYY')+"</h4>";		
+		title += "<h4>Timings: "+moment(event.start).format('h:mm a')+" - "+moment(event.end).format('h:mm a')+"</h4>";
+		title += "<p>"+event.description.description+"<p>";
+		$('#delete_event').html("<a href = 'javascript:void(0);' onclick ='deleteEvent(" + event.id + ", " + false + ")'>Delete</a>");
+	
+	
+	$('#desc_dialogLabel').html(title);
+	$('#desc_dialog').modal('show');
+
+}
+
+function show_list_events_details (event) {
+  $("#desc_dialog").find('.modal-header').show();
+	//$('#event_desc').html(event.description);
+	$('#edit_event').html("<a href = 'javascript:void(0);' onclick ='editEvent(" + event.id + ")'>Edit</a>");
+	
+		title = "<h3>"+event.title+"</h3>";
+		title += "<h4>Class: "+event.location+"</h4>";
+		title += "<h4>Date: "+moment(event.start).format('MM/DD/YYYY')+"</h4>";		
+		title += "<h4>Timings: "+moment(event.start).format('h:mm a')+" - "+moment(event.end).format('h:mm a')+"</h4>";
+		title += "<p>"+event.description+"<p>";
+		$('#delete_event').html("<a href = 'javascript:void(0);' onclick ='deleteEvent(" + event.id + ", " + false + ")'>Delete</a>");
+	
+	
+	$('#desc_dialogLabel').html(title);
+	$('#desc_dialog').modal('show');
+}
+
+
+function showEventDetailsUser(event) {
+	$("#desc_dialog").find('.modal-header').show();
+	//$('#event_desc').html(event.description);
+	// $('#edit_event').html("<a href = 'javascript:void(0);' onclick ='editEvent(" + event.id + ")'>Edit</a>");
+
+	    title = "<h3>"+event.title+"</h3>";
+		title += "<h4>Class: "+event.location+"</h4>";
+		title += "<h4>Date: "+moment(event.start).format('MM/DD/YYYY')+"</h4>";		
+		title += "<h4>Timings: "+moment(event.start).format('h:mm a')+" - "+moment(event.end).format('h:mm a')+"</h4>";
+		title += "<p>"+event.description+"<p>";
+	
+	$('#desc_dialogLabel').html(title);
+	$('#desc_dialog').modal('show');
+
+}
+
+function editEvent(event_id) {
+	jQuery.ajax({
+		url : "/events/" + event_id + "/edit",
+		success : function(data) {
+			$('#event_desc').html(data['form']);
+		}
+	});
+}
+
+function deleteEvent(event_id, delete_all) {
+	alert("Delete Event");
+	jQuery.ajax({
+		// data : 'authenticity_token=' + authenticity_token + '&delete_all=' + delete_all,
+		data : '&delete_all=' + delete_all,
+		dataType : 'script',
+		type : 'delete',
+		url : "/events/" + event_id,
+		success : refetch_events_and_close_dialog
+	});
+}
+
+function refetch_events_and_close_dialog() {
+	$('#calendar').fullCalendar('refetchEvents');
+	// $('.dialog:visible').dialog('destroy');
+	$('.modal.fade.in').modal('hide');
+
+	// jQuery.ajax({
+	// data : 'id=' + event.id + '&title=' + event.title + '&day_delta=' + dayDelta + '&minute_delta=' + minuteDelta + '&authenticity_token=' + authenticity_token,
+	// dataType : 'script',
+	// type : 'get',
+	// url : "/events/list_events",
+	// success : function(data) {
+	// alert(data);
+	// $('#eventlisting').html(data);
+	// }
+	// });
+
+	$.get("/events/list_events", function(data) {
+		$('#eventlisting').empty();
+		$('#eventlisting').html(data);
+
+	});
+}
+
+function showPeriodAndFrequency(value) {
+
+	switch (value) {
+		case 'Daily':
+			$('#period').html('day');
+			$('#frequency').show();
+			break;
+		case 'Weekly':
+			$('#period').html('week');
+			$('#frequency').show();
+			break;
+		case 'Monthly':
+			$('#period').html('month');
+			$('#frequency').show();
+			break;
+		case 'Yearly':
+			$('#period').html('year');
+			$('#frequency').show();
+			break;
+
+		default:
+			$('#frequency').hide();
+	}
+}
+
+function showdateupto(value) {
+	if (value == "Until") {
+		$("#datepicker").val();
+		$("#dateupto").show();
+	} else {
+		$("#dateupto").hide();
+	}
+
+}
+
+
+$(document).ready(function() {
+	$.authenticityToken = function() {
+		return $('#authenticity-token').attr('content');
+	};
+
+	$('#create_event, #desc_dialog').on('submit', "#event_form", function(event) {
+		var $spinner = $('.spinner');
+		event.preventDefault();
+		$.ajax({
+			type : "POST",
+			data : $(this).serialize(),
+			url : $(this).attr('action'),
+			beforeSend : show_spinner,
+			complete : hide_spinner,
+			success : refetch_events_and_close_dialog,
+			error : handle_error
+		});
+
+		function show_spinner() {
+			$spinner.show();
+		}
+
+		function hide_spinner() {
+			$spinner.hide();
+		}
+
+		function handle_error(xhr) {
+			alert(xhr.responseText);
+		}
+
+	});
+});
+
+$(document).on("click",'#new_event',function(event) {
+		event.preventDefault();
+		var url = $(this).attr('href');
+		var user_id = $(this).data('userid');
+		alert(user_id);
+		$.ajax({
+			url : url,
+			beforeSend : function() {
+				$('#loading').show();
+			},
+			complete : function() {
+				$('#loading').hide();
+			},
+			success : function(data) {
+				// $('#create_event').replaceWith(data['form']);
+				$('#eventModalLabel').html('New Event');
+				$('#create_event').empty();
+				$('#create_event').html(data['form']);
+				$('#create_event').find("#event_user_id").val(user_id);
+				
+				// $('#create_event_dialog').dialog({
+					// title : 'New Event',
+					// modal : true,
+					// width : 500,
+					// close : function(event, ui) {
+						// $('#create_event_dialog').dialog('destroy');
+					// }
+				// });
+				
+				$('#eventModal').modal('show');  
+			}
+		});
+	});
+
+$(document).on("click","#eventlist",function(){		
+	var user_id=$("#event_user_id").val();
+	$.get("/events/list_events",{user_id:user_id},function(data){
+		$("#eventlisting").empty();
+		$("#eventlisting").html(data);
+	});
+});
+

@@ -1,0 +1,103 @@
+<br>
+
+<div>
+	
+	<div id='calendar'></div>
+</div>
+
+<script>
+var calendarObj = {};
+$(document).ready(function() {
+	// page is now ready, initialize the calendar...
+	calendarObj = call_calendar(<%=@user_id%>);
+});
+
+$(document).on("click","a[data-target='#eventcalendar']",function(){
+	$('#calendar').fullCalendar( 'refetchEvents' );	
+});
+
+function call_calendar(user_id) {
+		 $("#calendar").empty();
+	
+		var calendar = $('#calendar').fullCalendar({
+			minTime: "07:00:00",
+			maxTime: "18:00:00",
+			editable : true,
+			allDaySlot : false,
+			slotDuration : '00:15:00',
+			// eventDurationEditable: false,
+			header : {
+				left : 'prev,next today',
+				center : 'title',
+				right : 'month,agendaWeek,agendaDay'
+			},
+			defaultView : 'agendaDay',
+		    height : "auto",
+			slotMinutes : 15,
+			loading : function(bool) {
+				if (bool)
+					$('#loading').show();
+				else
+					$('#loading').hide();
+			},
+
+			events : {
+				url : '/events/get_events.json',
+				data : {
+					"user_id" : user_id
+					},
+				type : 'GET',
+				success : function (event) {
+				  // alert(JSON.stringify(event));
+				},
+				error : function() {
+					alert('there was an error while fetching events!');
+				},
+				// color: 'yellow',   // a non-ajax option
+				// textColor: 'black' // a non-ajax option
+			},
+
+			timeFormat : 'h:mm t',
+			dragOpacity : "0.5",
+			eventDrop : function(event, delta, revertFunc) {
+				console.log(delta);
+				if (confirm("Are you sure about this change?")) {
+					moveEvent(event, delta);
+				} else {
+					revertFunc();
+				}
+			},
+
+			eventResize : function(event, delta, revertFunc) {
+				if (confirm("Are you sure about this change?")) {
+					resizeEvent(event, delta);
+				} else {
+					revertFunc();
+				}
+			},
+
+			eventClick : function(event, jsEvent, view) {
+				showEventDetails(event);
+			},
+		});
+		return calendar;
+	}
+
+
+</script>
+
+
+
+<!-- div id = "desc_dialog" class="dialog" style ="display:none;">
+<div id = "event_desc"></div>
+<br/>
+<br/>
+<div id = "event_actions">
+<span id = "edit_event"></span>
+<span id = "delete_event"></span>
+</div>
+</div> -->
+
+<!-- <div id = "create_event_dialog" class="dialog" style ="display:none;">
+<div id = "create_event"></div>
+</div> -->

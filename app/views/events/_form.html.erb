@@ -1,0 +1,80 @@
+<div class="row">
+	<div class="col-sm-2"></div>
+<div class="col-sm-8">
+<%#remote_form_for @event, :url => {:action => :create}, :before => "$('#creating_events').show();", :complete => "$('#creating_events').hide();" do |f| %>
+<%= form_for @event, :html => { :id => 'event_form' } do |f| %>
+<p>
+  <%=f.label :title %>
+  <br/>
+  <%=f.text_field :title,:class=>"form-control" %>
+</p>
+<p>
+  <%=f.label :description %>
+  <br/>
+  <%=f.text_area :description, :rows => 4, :cols => 30,:class=>"form-control" %>
+</p>
+<p>
+  <%=f.label :location, 'Class' %>
+  <br/>
+  <%=f.text_field :location,:class=>"form-control" %>
+</p>
+
+<p>
+  <%=f.label :starttime, 'Start Time' %>
+  <br/>
+  <div class="form-group">
+  	 <div class='input-group date datetimepicker' >
+  <%=f.text_field :starttime,:class=>"form-control" ,:value=> DateTime.now.strftime("%d/%m/%Y %I:%M %p ") %>
+  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+   </div>
+  </div>
+</p>
+<p>
+  <%=f.label :endtime, 'End Time' %>
+  <br/>
+  <div class="form-group">
+  	 <div class='input-group date datetimepicker'>
+  <%=f.text_field :endtime,:class=>"form-control", :value=> (DateTime.now+ 1.hours).strftime("%d/%m/%Y %I:%M %p ")%>
+  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+   </div>
+  </div>
+</p>
+<%=f.hidden_field :user_id, :value => @user_id %>
+<%=f.hidden_field :id, :value => @event.id %>
+<p>
+  <%=f.submit 'Create',:class=>"btn  btn-primary" %> <span id = "creating_events" class="spinner" style = "display:none;">Creating, Please wait...</span>
+</p>
+ 
+</div>
+
+
+
+<%end %>
+<script>
+$(function() {
+	$('.datetimepicker').datetimepicker({
+		format: "dd MM yyyy HH:ii P",
+        autoclose: true,
+        todayBtn: true,        
+        minuteStep: 15,        
+        showMeridian: true,
+        todayHighlight:1,
+        pickerPosition:  'top-right'
+          
+	});
+	
+	// $('.datepicker').datetimepicker({
+		 // format: "dd MM yyyy",
+         // pickerPosition:  'top-right',
+            // weekStart: 1,
+	        // todayBtn:  0,
+			// autoclose: 1,
+			// todayHighlight: 1,
+			// startView: 2,
+			// minView: 2,
+			// forceParse: 0      
+	// });
+	
+}); 
+</script>
+</div></div>

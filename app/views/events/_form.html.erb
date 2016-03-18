@@ -20,11 +20,22 @@
 </p>
 
 <p>
+  <%=f.label :date, 'Date' %>
+  <br/>
+  <div class="form-group">
+  	 <div class='input-group date datepicker' >
+  <%=f.text_field :date,:class=>"form-control" ,:value=> DateTime.now.strftime("%d/%m/%Y ") %>
+  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+   </div>
+  </div>
+</p>
+
+<p>
   <%=f.label :starttime, 'Start Time' %>
   <br/>
   <div class="form-group">
-  	 <div class='input-group date datetimepicker' >
-  <%=f.text_field :starttime,:class=>"form-control" ,:value=> DateTime.now.strftime("%d/%m/%Y %I:%M %p ") %>
+  	 <div class='input-group date timepicker' >
+  <%=f.text_field :starttime,:class=>"form-control" ,:value=> DateTime.now.strftime("%I:%M %p ") %>
   <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
    </div>
   </div>
@@ -33,8 +44,8 @@
   <%=f.label :endtime, 'End Time' %>
   <br/>
   <div class="form-group">
-  	 <div class='input-group date datetimepicker'>
-  <%=f.text_field :endtime,:class=>"form-control", :value=> (DateTime.now+ 1.hours).strftime("%d/%m/%Y %I:%M %p ")%>
+  	 <div class='input-group date timepicker'>
+  <%=f.text_field :endtime,:class=>"form-control", :value=> (DateTime.now+ 1.hours).strftime("%I:%M %p ")%>
   <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
    </div>
   </div>
@@ -52,28 +63,30 @@
 <%end %>
 <script>
 $(function() {
-	$('.datetimepicker').datetimepicker({
-		format: "dd MM yyyy HH:ii P",
-        autoclose: true,
-        todayBtn: true,        
-        minuteStep: 15,        
+	$('.timepicker').datetimepicker({
+		format: "HH:ii P",
+        autoclose: true,      
+        minuteStep: 15,   
+        startView: 'day',
+        minView: 'hour',
+        maxView:'day',     
         showMeridian: true,
-        todayHighlight:1,
+        startDate: new Date(),
         pickerPosition:  'top-right'
           
 	});
 	
-	// $('.datepicker').datetimepicker({
-		 // format: "dd MM yyyy",
-         // pickerPosition:  'top-right',
-            // weekStart: 1,
-	        // todayBtn:  0,
-			// autoclose: 1,
-			// todayHighlight: 1,
-			// startView: 2,
-			// minView: 2,
-			// forceParse: 0      
-	// });
+	$('.datepicker').datetimepicker({
+		 format: "dd MM yyyy",
+         pickerPosition:  'top-right',
+            weekStart: 1,
+	        todayBtn:  0,
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0      
+	});
 	
 }); 
 </script>

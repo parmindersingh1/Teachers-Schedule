@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       post :resize
       get :get_dateupto
       get :list_events
+      post :get_user_shedules
     end
   end
   
@@ -14,7 +15,7 @@ Rails.application.routes.draw do
   post 'admin_panel/update_role'
   
   root :to => 'events#index'
-  devise_for :users, :controllers => {sessions: 'sessions', :passwords => "passwords"}
+  devise_for :users, :controllers => {:sessions=> 'sessions', :passwords => "passwords",:registrations => "registrations"}
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

@@ -2,7 +2,8 @@ class EventsController < ApplicationController
   # skip_before_action :authenticate_user!, :only => [:get_events,:list_events]
   before_action :set_event, only: [:show]
   before_action :require_permission, only: [ :edit, :update, :destroy]
-
+  skip_before_filter  :verify_authenticity_token, only: [:get_user_shedules]
+  
   def new
     @event = Event.new(:endtime => 1.hour.from_now)
     render :json => {:form => render_to_string(:partial => 'form')}
@@ -33,13 +34,14 @@ class EventsController < ApplicationController
       @user_id=params[:user_id]
     else
       @user_id=current_user.id
-    end
-    # puts "----------#{DateTime.parse(params['start'])}"    
-    @events = Event.where("starttime >= '#{DateTime.parse(params['start']).to_formatted_s(:db)}' and endtime <= '#{DateTime.parse(params['end']).to_formatted_s(:db)}' and user_id=#{@user_id}" )
+    end 
+    @events = Event.where("date >= '#{DateTime.parse(params['start']).to_formatted_s(:db)}' and date <= '#{DateTime.parse(params['end']).to_formatted_s(:db)}' and user_id=#{@user_id}" )
     
     events = [] 
     @events.each do |event|
-      events << {:id => event.id, :title => event.title, :description => {:location =>event.location,:description => event.description || "No description here..."}, :start => "#{event.starttime.iso8601}", :end => "#{event.endtime.iso8601}"}
+      events << {:id => event.id, :title => event.title, :description => {:location =>event.location,:description => event.description || "No description here..."},
+       # :start => "#{event.starttime.iso8601}", :end => "#{event.endtime.iso8601}"}
+       :start => "#{DateTime.parse("#{event.date} #{event.starttime}")}", :end => "#{DateTime.parse("#{event.date} #{event.endtime}")}"}
     end
     puts "========#{events.inspect}"
     respond_to do |format|
@@ -78,8 +80,7 @@ class EventsController < ApplicationController
   end
   
   def update
-    puts "----------#{params[:event]}"
-    @event = Event.find_by_id(params[:event][:id])
+     @event = Event.find_by_id(params[:event][:id])
       @event.attributes = event_params
       @event.save
    
@@ -98,25 +99,37 @@ class EventsController < ApplicationController
     # render :partial => "dateupto", :locals => { :f => f }
   # end
   
-  def list_events
-    @user_id=""
-    unless params[:user_id].nil?
-      @user_id=params[:user_id]
+  def list_events    
+    @user_id=""   
+    unless event_params.blank? || event_params[:user_id].nil?
+      @user_id=event_params[:user_id]
     else
       @user_id=current_user.id
     end
     @events= Event.where("user_id=#{@user_id}").order('starttime DESC')
     @events=@events.paginate(:page => params[:page] || 1,:per_page => 20)
-    puts "---=====#{@events.count}"   
-     # respond_to do |format|
-      # format.js {render :partial=>"listevents"}
-      # format.html {render :partial=>"listevents"}
-    # end
+    
     render :partial=>"listevents"
     
     
     # render :layout => false
   end
+  
+  def get_user_shedules
+    d = Time.now
+    @user=""
+    unless event_params.nil? && event_params[:user_id].nil?
+      @user=User.find_by_id(event_params[:user_id])
+    else
+      @user=current_user
+    end
+    @events= Event.where("user_id=#{@user.id} and starttime >='#{d.at_beginning_of_week.to_formatted_s(:db)}'").order('starttime DESC')
+        
+   render :json=>{:events=>@events.to_json(:include => :user ), :success=> true, :message=> "Success"}
+   # render :json=>{:events=>@events, :success=> true, :message=> "Success"}
+     
+  end
+  
   def show_schedule    
     
     @events= Event.where("user_id=#{@user_id}")
@@ -132,7 +145,8 @@ class EventsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:id, :title, :description, :starttime, :endtime, :all_day, :location, :commit_button,:user_id)
+      return params.require(:event).permit(:id, :title, :description, :date, :starttime, :endtime, :all_day, :location, :commit_button,:user_id) unless params[:event].nil?
+      return [] 
     end
     
      def require_permission

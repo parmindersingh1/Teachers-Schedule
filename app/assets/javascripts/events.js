@@ -93,19 +93,9 @@ function refetch_events_and_close_dialog() {
 	$('#calendar').fullCalendar('refetchEvents');
 	// $('.dialog:visible').dialog('destroy');
 	$('.modal.fade.in').modal('hide');
+	
 
-	// jQuery.ajax({
-	// data : 'id=' + event.id + '&title=' + event.title + '&day_delta=' + dayDelta + '&minute_delta=' + minuteDelta + '&authenticity_token=' + authenticity_token,
-	// dataType : 'script',
-	// type : 'get',
-	// url : "/events/list_events",
-	// success : function(data) {
-	// alert(data);
-	// $('#eventlisting').html(data);
-	// }
-	// });
-
-	$.get("/events/list_events", function(data) {
+	$.get("/events/list_events",{event: {}}, function(data) {
 		$('#eventlisting').empty();
 		$('#eventlisting').html(data);
 
@@ -185,7 +175,6 @@ $(document).on("click",'#new_event',function(event) {
 		event.preventDefault();
 		var url = $(this).attr('href');
 		var user_id = $(this).data('userid');
-		alert(user_id);
 		$.ajax({
 			url : url,
 			beforeSend : function() {
@@ -200,16 +189,7 @@ $(document).on("click",'#new_event',function(event) {
 				$('#create_event').empty();
 				$('#create_event').html(data['form']);
 				$('#create_event').find("#event_user_id").val(user_id);
-				
-				// $('#create_event_dialog').dialog({
-					// title : 'New Event',
-					// modal : true,
-					// width : 500,
-					// close : function(event, ui) {
-						// $('#create_event_dialog').dialog('destroy');
-					// }
-				// });
-				
+							
 				$('#eventModal').modal('show');  
 			}
 		});
@@ -217,7 +197,7 @@ $(document).on("click",'#new_event',function(event) {
 
 $(document).on("click","#eventlist",function(){		
 	var user_id=$("#event_user_id").val();
-	$.get("/events/list_events",{user_id:user_id},function(data){
+	$.get("/events/list_events",{event: {user_id:user_id}},function(data){
 		$("#eventlisting").empty();
 		$("#eventlisting").html(data);
 	});

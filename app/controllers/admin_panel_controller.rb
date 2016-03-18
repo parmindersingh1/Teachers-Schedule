@@ -1,11 +1,19 @@
 class AdminPanelController < ApplicationController
   # authorize_resource :class => false
   def users    
-    if current_user.role == ENV["ROLE_ADMIN"]
-      @users =User.all 
-    else
-      @users= Array(current_user)    
-    end
+   if current_user.role == ENV["ROLE_ADMIN"]
+        @users =User.all 
+   else
+        @users= Array(current_user)    
+   end
+   puts "======#{@users[0].inspect}"
+   respond_to do |format|
+    format.html 
+    format.json {    
+          render :json => {  :success => true, :data => @users}
+     } 
+    
+    end 
   end
 
   def edit_role    

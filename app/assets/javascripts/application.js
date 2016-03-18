@@ -18,6 +18,7 @@
 //= require bootstrap-sprockets
 //= require bootstrap-datetimepicker.min
 //= require dataTables/jquery.dataTables
+//= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
 //= require events
 //= require_tree .
 

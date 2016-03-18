@@ -16,8 +16,9 @@ ActiveRecord::Schema.define(version: 20160301104015) do
   create_table "events", force: :cascade do |t|
     t.string   "title",       limit: 255
     t.string   "description", limit: 255
-    t.datetime "starttime"
-    t.datetime "endtime"
+    t.date     "date"
+    t.time     "starttime"
+    t.time     "endtime"
     t.integer  "user_id",     limit: 4
     t.string   "location",    limit: 255
     t.datetime "created_at"
@@ -42,6 +43,7 @@ ActiveRecord::Schema.define(version: 20160301104015) do
     t.string   "username",               limit: 255
     t.string   "first_name",             limit: 255
     t.string   "last_name",              limit: 255
+    t.string   "mobile",                 limit: 255
     t.string   "role",                   limit: 255
   end
 

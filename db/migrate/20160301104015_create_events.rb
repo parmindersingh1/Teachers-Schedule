@@ -3,8 +3,9 @@ class CreateEvents < ActiveRecord::Migration
    create_table :events do |t|
       t.string :title
       t.string :description
-      t.datetime :starttime
-      t.datetime :endtime
+      t.date :date
+      t.time :starttime
+      t.time :endtime
       # t.boolean :all_day, :default => false
       t.references :user, index: true
       t.string :location

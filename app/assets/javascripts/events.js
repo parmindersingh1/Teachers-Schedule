@@ -41,8 +41,8 @@ function show_list_events_details (event) {
 	
 		title = "<h3>"+event.title+"</h3>";
 		title += "<h4>Class: "+event.location+"</h4>";
-		title += "<h4>Date: "+moment(event.start).format('MM/DD/YYYY')+"</h4>";		
-		title += "<h4>Timings: "+moment(event.start).format('h:mm a')+" - "+moment(event.end).format('h:mm a')+"</h4>";
+		title += "<h4>Date: "+moment(event.date).format('MM/DD/YYYY')+"</h4>";		
+		title += "<h4>Timings: "+moment(event.starttime).format('h:mm a')+" - "+moment(event.endtime).format('h:mm a')+"</h4>";
 		title += "<p>"+event.description+"<p>";
 		$('#delete_event').html("<a href = 'javascript:void(0);' onclick ='deleteEvent(" + event.id + ", " + false + ")'>Delete</a>");
 	
@@ -59,8 +59,8 @@ function showEventDetailsUser(event) {
 
 	    title = "<h3>"+event.title+"</h3>";
 		title += "<h4>Class: "+event.location+"</h4>";
-		title += "<h4>Date: "+moment(event.start).format('MM/DD/YYYY')+"</h4>";		
-		title += "<h4>Timings: "+moment(event.start).format('h:mm a')+" - "+moment(event.end).format('h:mm a')+"</h4>";
+		title += "<h4>Date: "+moment(event.date).format('MM/DD/YYYY')+"</h4>";		
+		title += "<h4>Timings: "+moment(event.starttime).format('h:mm a')+" - "+moment(event.starttime).format('h:mm a')+"</h4>";
 		title += "<p>"+event.description+"<p>";
 	
 	$('#desc_dialogLabel').html(title);

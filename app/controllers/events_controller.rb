@@ -2,7 +2,7 @@ class EventsController < ApplicationController
   # skip_before_action :authenticate_user!, :only => [:get_events,:list_events]
   before_action :set_event, only: [:show]
   before_action :require_permission, only: [ :edit, :update, :destroy]
-  skip_before_filter  :verify_authenticity_token, only: [:get_user_shedules]
+  skip_before_filter  :verify_authenticity_token
   
   def new
     @event = Event.new(:endtime => 1.hour.from_now)
@@ -10,13 +10,18 @@ class EventsController < ApplicationController
   end
   
   def create        
-    event = Event.new(event_params)    
-    if event.save
-      render :nothing => true
-      # redirect_to events_path
-    else
-      render :text => event.errors.full_messages.to_sentence, :status => 422
-    end
+    event = Event.new(event_params)   
+    respond_to do |format|    
+        if event.save
+          format.html {render :nothing => true}
+          format.json { render :json => {:event=> event.to_json(:include => :user ), :success => true, :message => "Schedule Created Successfully" }}
+          # redirect_to events_path
+        else
+          format.html  {render :text => event.errors.full_messages.to_sentence, :status => 422}
+          format.json {render :json => { :success => false, :message => event.errors.full_messages} }
+        end    
+    format.json 
+    end 
   end
   
   def index
@@ -43,7 +48,7 @@ class EventsController < ApplicationController
        # :start => "#{event.starttime.iso8601}", :end => "#{event.endtime.iso8601}"}
        :start => "#{DateTime.parse("#{event.date} #{event.starttime}")}", :end => "#{DateTime.parse("#{event.date} #{event.endtime}")}"}
     end
-    puts "========#{events.inspect}"
+    
     respond_to do |format|
     format.html
     format.json { render :json => events }
@@ -87,8 +92,7 @@ class EventsController < ApplicationController
     render :nothing => true    
   end  
   
-  def destroy
-    puts "------in destroy"
+  def destroy  
     @event = Event.find_by_id(params[:id])  
       @event.destroy
    
@@ -123,20 +127,37 @@ class EventsController < ApplicationController
     else
       @user=current_user
     end
-    @events= Event.where("user_id=#{@user.id} and starttime >='#{d.at_beginning_of_week.to_formatted_s(:db)}'").order('starttime DESC')
-        
+    @events= Event.where("user_id=#{@user.id} and date >='#{d.at_beginning_of_week.to_formatted_s(:db)}'").order('starttime DESC')
+      
    render :json=>{:events=>@events.to_json(:include => :user ), :success=> true, :message=> "Success"}
    # render :json=>{:events=>@events, :success=> true, :message=> "Success"}
      
   end
   
   def show_schedule    
-    
     @events= Event.where("user_id=#{@user_id}")
-    
-    
   end
 
+  def update_json
+      @event = Event.find_by_id(event_params[:id])
+      @event.attributes = event_params
+      if @event.save
+        render :json=>{:event=>@event.to_json(:include => :user ), :success=> true, :message=> "Successfully Updated"}
+      else
+        render :json=>{ :success=> false, :message=> @event.errors.full_messages}
+      end   
+      
+  end  
+  
+   def destroy_json 
+    @event = Event.find_by_id(params[:id])  
+      if @event.destroy
+        render :json=>{:success=> true, :message=> "Successfully Deleted"}
+      else
+        render :json=>{ :success=> false, :message=> @event.errors.full_messages}
+      end   
+       
+  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_event
@@ -151,7 +172,7 @@ class EventsController < ApplicationController
     
      def require_permission
     @event = Event.find(params[:id])
-    unless current_user == @event.user || current_user.has_role?(ENV["ROLE_ADMIN"])
+    unless current_user == @event.user || current_user.role == (ENV["ROLE_ADMIN"])
       redirect_to :back, notice: "you don't have previleges"
     #Or do something else here
     end

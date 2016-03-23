@@ -8,6 +8,8 @@
 		<tr>
 			<th>Title</th>
 			<th>Description:</th>
+			<th>Class:</th>
+			<th>Date:</th>
 			<th>Start Time</th>
 			<th>End Time</th>
 		</tr>
@@ -21,10 +23,14 @@
            <td><a id="show_list_events" href="#" onclick="showEventDetailsUser(<%=event.to_json%>); return false;"><%= event.title.humanize %></a></td>
            <%end%>
 			<td><%= event.description %></td>
+			
+			<td><%= event.location %></td>
+			
+			<td><%= event.date.strftime("%d/%m/%Y") %></td>
 
-			<td><%= event.starttime.strftime("%d/%m/%Y %I:%M %p ") %></td>
+			<td><%= event.starttime.strftime("%I:%M %p ") %></td>
 
-			<td><%= event.endtime.strftime("%d/%m/%Y %I:%M %p ") %></td>
+			<td><%= event.endtime.strftime("%I:%M %p ") %></td>
 		</tr>
 
 		<%end%>

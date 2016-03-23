@@ -6,7 +6,6 @@ class AdminPanelController < ApplicationController
    else
         @users= Array(current_user)    
    end
-   puts "======#{ENV["ROLE_ADMIN"]}"
    respond_to do |format|
     format.html 
     format.json {    

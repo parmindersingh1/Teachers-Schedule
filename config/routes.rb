@@ -7,6 +7,8 @@ Rails.application.routes.draw do
       get :get_dateupto
       get :list_events
       post :get_user_shedules
+      post :update_json
+      post :destroy_json
     end
   end
   

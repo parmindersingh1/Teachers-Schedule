@@ -13,12 +13,17 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require owl.carousel.min
+//= require bootstrap.min
 //= require moment
 //= require fullcalendar
-//= require bootstrap-sprockets
 //= require bootstrap-datetimepicker.min
 //= require dataTables/jquery.dataTables
 //= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
+//= require wow.min
+//= require typewriter
+//= require jquery.onepagenav
+//= require main
 //= require events
 //= require_tree .
 

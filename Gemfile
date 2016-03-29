@@ -26,7 +26,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'therubyracer'
 gem 'execjs'
-gem 'bootstrap-sass', '~> 3.3.1'
+# gem 'bootstrap-sass', '~> 3.3.1'
 gem 'momentjs-rails', '>= 2.8.1'
 gem 'fullcalendar-rails', '~> 2.6.0'
 gem 'rails4-autocomplete'

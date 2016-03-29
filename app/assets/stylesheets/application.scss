@@ -12,10 +12,13 @@
  *
  *= require_tree .
  *= require_self
+ *= require normalize
+ *= require bootstrap
+ *= require owl
+ *= require animate
+ *= require cardio
  *= require fullcalendar
  *= require bootstrap-datetimepicker.min
  *= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
  */
 
-@import "bootstrap-sprockets";
-@import "bootstrap";

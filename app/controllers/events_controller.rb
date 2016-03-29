@@ -119,7 +119,7 @@ class EventsController < ApplicationController
     # render :layout => false
   end
   
-  def get_user_shedules
+  def get_user_schedules
     d = Time.now
     @user=""
     unless event_params.nil? && event_params[:user_id].nil?
@@ -127,8 +127,23 @@ class EventsController < ApplicationController
     else
       @user=current_user
     end
-    @events= Event.where("user_id=#{@user.id} and date >='#{d.at_beginning_of_week.to_formatted_s(:db)}'").order('starttime DESC')
+    @events= Event.where("user_id=#{@user.id} and date >='#{d.at_beginning_of_day.to_formatted_s(:db)}'").order(:date => :asc, :starttime => :asc)
       
+   render :json=>{:events=>@events.to_json(:include => :user ), :success=> true, :message=> "Success"}
+   # render :json=>{:events=>@events, :success=> true, :message=> "Success"}
+     
+  end
+  
+  def get_user_history_schedules
+    d = Time.now
+    @user=""
+    unless params.nil? && params[:user_id].nil?
+      @user=User.find_by_id(params[:user_id])
+    else
+      @user=current_user
+    end
+    @events= Event.where("user_id=#{@user.id} and date <'#{d.at_beginning_of_day.to_formatted_s(:db)}'").order(:date => :desc, :starttime => :asc)
+      puts "========++#{@events.to_json}"
    render :json=>{:events=>@events.to_json(:include => :user ), :success=> true, :message=> "Success"}
    # render :json=>{:events=>@events, :success=> true, :message=> "Success"}
      
@@ -166,7 +181,7 @@ class EventsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      return params.require(:event).permit(:id, :title, :description, :date, :starttime, :endtime, :all_day, :location, :commit_button,:user_id) unless params[:event].nil?
+      return params.require(:event).permit(:id, :title, :description, :date, :starttime, :endtime, :all_day, :location, :commit_button,:user_id) unless params[:event].empty?
       return [] 
     end
     

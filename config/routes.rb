@@ -6,7 +6,8 @@ Rails.application.routes.draw do
       post :resize
       get :get_dateupto
       get :list_events
-      post :get_user_shedules
+      post :get_user_schedules
+      get :get_user_history_schedules
       post :update_json
       post :destroy_json
     end

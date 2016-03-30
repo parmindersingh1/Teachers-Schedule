@@ -29,7 +29,8 @@
 					<% if user_signed_in? %>				   
 				         <% if current_user.role == ENV["ROLE_ADMIN"]%>
 				        <li><%=link_to "Users", admin_panel_users_path%></li>
-				        <%end%> 				      
+				        <%end%> 		
+				        <li><%=link_to "Schedules", events_path%></li>		      
 				   <%end%>
 					
 					
@@ -38,10 +39,7 @@
 				          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_user.email %>&nbsp;<i class="glyphicon glyphicon-user"></i>&nbsp; <b class="caret"></b></a>
 				          <ul class="dropdown-menu">
 				            <li><%= link_to 'Edit profile', edit_user_registration_path %></li>
-				            <li><%= link_to "Logout", destroy_user_session_path, method: :delete%></li>
-				            <li><a href="#">Something else here</a></li>
-				            <li class="divider"></li>
-				            <li><a href="#">Separated link</a></li>
+				            <li><%= link_to "Logout", destroy_user_session_path, method: :delete%></li>				            
 				          </ul>
 				        </li>
 				        <% else %>
@@ -64,35 +62,46 @@
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content modal-popup">
+				<a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
+				<h3 class="white modal-title" id="eventModalLabel"></h3>
+				<div id="create_event" class="modal-body">
+					---
+				</div>
+			</div>
+		</div>
+	</div>
+	
+<div class="modal fade" id="desc_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content modal-popup">
+			<a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
+			<h3 class="white modal-title" id="desc_dialogLabel"></h3>
+			<div class="modal-body">
 
- 
-      
-    
-      
-      
-      
-            
-      
+				<div id = "event_desc"></div>
+				<div class="row">
+					<div class="col-sm-2"></div>
+					<div class="col-sm-8">
+						<div id = "event_actions">
+							<span id = "edit_event"></span>
+							<span id = "delete_event"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+
+
   
 
-<header id="intro">
+   <header id="intro">
 		<div class="container">
 			<div class="table">
 				<div class="header-text">
@@ -106,4 +115,5 @@
 				</div>
 			</div>
 		</div>
-	</header>
+	</header> 
+	<hr>

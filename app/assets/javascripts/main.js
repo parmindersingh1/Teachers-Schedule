@@ -14,13 +14,27 @@ function heightAdjust() {
 			$('.parallax img').css('width', $('.parallax').height() * ratio + 'px');
 		}
 
-		$('header').height($(window).height() + 80);
+		$('header').height($(window).height() /2);
 		$('section .cut').each(function() {
 			if ($(this).hasClass('cut-top'))
 				$(this).css('border-right-width', $(this).parent().width() + "px");
 			else if ($(this).hasClass('cut-bottom'))
 				$(this).css('border-left-width', $(this).parent().width() + "px");
 	});
+	
+	// Sliders Init
+		$('.owl-schedule').owlCarousel({
+			singleItem: true,
+			pagination: true
+		});
+		$('.owl-testimonials').owlCarousel({
+			singleItem: true,
+			pagination: true
+		});
+		$('.owl-twitter').owlCarousel({
+			singleItem: true,
+			pagination: true
+		});
 }
 
 jQuery(function($) {
@@ -35,19 +49,7 @@ jQuery(function($) {
 		// Preloader
 		heightAdjust();
 
-		// Sliders Init
-		$('.owl-schedule').owlCarousel({
-			singleItem: true,
-			pagination: true
-		});
-		$('.owl-testimonials').owlCarousel({
-			singleItem: true,
-			pagination: true
-		});
-		$('.owl-twitter').owlCarousel({
-			singleItem: true,
-			pagination: true
-		});
+		
 
 		// Navbar Init
 		$('nav').addClass('original').clone().insertAfter('nav').addClass('navbar-fixed-top').css('position', 'fixed').css('top', '0').css('margin-top', '0').removeClass('original');

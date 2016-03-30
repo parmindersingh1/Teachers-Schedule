@@ -19,7 +19,7 @@
 </head>
 <body>
 	
-	<%= render "layouts/header"%>
+<%= render "layouts/header"%>
 <div class="container">
 	       <% if notice %>
 			<div class="alert  alert alert-warning">
@@ -36,6 +36,9 @@
 <%= yield %>
 </div>
 <%= render "layouts/footer"%>
+
+
+
 <script type="text/javascript">
 			authenticity_token = "<%= form_authenticity_token %>"
 			// var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");

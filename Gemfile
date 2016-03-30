@@ -27,8 +27,10 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'therubyracer'
 gem 'execjs'
 # gem 'bootstrap-sass', '~> 3.3.1'
-gem 'momentjs-rails', '>= 2.8.1'
+gem 'momentjs-rails', '>= 2.9.0'
 gem 'fullcalendar-rails', '~> 2.6.0'
+
+gem 'bootstrap3-datetimepicker-rails', '~> 4.17.37'
 gem 'rails4-autocomplete'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # Use ActiveModel has_secure_password

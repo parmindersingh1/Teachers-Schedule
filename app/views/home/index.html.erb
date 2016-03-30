@@ -1,0 +1,56 @@
+<section>
+	<div class="cut cut-top"></div>
+	<div class="container">
+		<div class="row intro-tables">
+
+			<div class="col-md-4">
+				<div class="intro-table intro-table-first">
+					<h5 class="white heading">Today's Schedule</h5>
+					<div class="owl-carousel owl-schedule bottom">
+
+						<% @today_schedules.in_groups_of(3).each do |group| %>
+						<div class="item">
+							<% group.each do |sc| %>
+							<%unless sc.nil?%>
+							<div class="schedule-row row">
+								<div class="col-xs-6">
+									<h5 class="regular white"><%= sc.location%></h5>
+								</div>
+								<div class="col-xs-6 text-right">
+									<h5 class="white"><%= sc.starttime.strftime("%I:%M")%> - <%= sc.endtime.strftime("%I:%M")%></h5>
+								</div>
+							</div>
+							<%end%>
+							<%end%>
+						</div>
+
+						<%end%>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-4">
+				<div class="intro-table intro-table-hover">
+					<h5 class="white heading hide-hover">All Schedules</h5>
+					<div class="bottom">
+						<h4 class="white heading small-heading no-margin regular">My Schedules</h4>
+						<!-- <h4 class="white heading small-pt">20% Discount</h4> -->
+						<%= link_to "Schedules", events_path, :class=>"btn btn-white-fill expand"%>
+						<!-- <a href="#" class="btn btn-white-fill expand">Schedules</a> -->
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="intro-table intro-table-third">
+					<h5 class="white heading">Happy Clients</h5>
+					<div class="owl-testimonials bottom">
+						<div class="item">
+							<h4 class="white heading content">I couldn't be more happy with the results!</h4>
+							<h5 class="white heading light author">Adam Jordan</h5>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

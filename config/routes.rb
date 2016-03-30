@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'home/index'
+
   resources :events,  :except => :show do
      collection do 
       get :get_events
@@ -17,8 +19,8 @@ Rails.application.routes.draw do
   get 'admin_panel/edit_role'
   post 'admin_panel/update_role'
   
-  root :to => 'events#index'
-  devise_for :users, :controllers => {:sessions=> 'sessions', :passwords => "passwords",:registrations => "registrations"}
+  root :to => 'home#index'
+  devise_for :users, :controllers => {:sessions=> 'sessions',:registrations => "registrations"}
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

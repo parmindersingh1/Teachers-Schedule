@@ -1,47 +1,42 @@
-<div class="row">
-	<div class="col-sm-2"></div>
-<div class="col-sm-8">
+
 <%= form_for @event, :html => { :id => 'event_form' } do |f| %>
 <p>
-  <%=f.label :title %>
-  <br/>
-  <%=f.text_field :title ,:class=>"form-control"%>
+  
+  <%=f.text_field :title,:class=>"form-control form-white",:placeholder=>"Title" %>
 </p>
 <p>
-  <%=f.label :description %>
-  <br/>
-  <%=f.text_area :description, :rows => 4, :cols => 30 ,:class=>"form-control"%>
+  
+  <%=f.text_area :description, :rows => 4, :cols => 30,:class=>"form-control form-white",:placeholder=>"Description" %>
 </p>
 <p>
-  <%=f.label :date, 'Date' %>
-  <br/>
-  <div class="form-group">
-  	 <div class='input-group date datepicker' >
-  <%=f.text_field :date,:class=>"form-control" ,:value=> DateTime.now.strftime("%d/%m/%Y ") %>
-  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-   </div>
-  </div>
+ 
+  <%=f.text_field :location,:class=>"form-control form-white",:placeholder=>"Class" %>
 </p>
 
 <p>
-  <%=f.label :starttime, 'Start Time' %>
-  <br/>
-  <div class="form-group">
-  	 <div class='input-group date timepicker' >
-  <%=f.text_field :starttime,:class=>"form-control",:value => @event.starttime.strftime("%I:%M %p ") %>
+  
+ <div class='input-group date scdatepicker' >
+  <%=f.text_field :date,:class=>"form-control form-white" ,:value=> DateTime.now.strftime("%d/%m/%Y ") %>
   <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
    </div>
-  </div>
+  
+</p>
+
+<p>
+  
+  	 <div class='input-group date sctimepicker' >
+  <%=f.text_field :starttime,:class=>"form-control form-white",:value => @event.starttime.strftime("%I:%M %p ") %>
+  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+   </div>
+  
 </p>
 <p>
-  <%=f.label :endtime, 'End Time' %>
-  <br/>
-  <div class="form-group">
-  	 <div class='input-group date timepicker' >
-  <%=f.text_field :endtime,:class=>"form-control",:value => @event.endtime.in_time_zone(Time.zone).strftime("%I:%M %p ") %>
+  
+  	 <div class='input-group date sctimepicker' >
+  <%=f.text_field :endtime,:class=>"form-control form-white",:value => @event.endtime.in_time_zone(Time.zone).strftime("%I:%M %p ") %>
   <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
    </div>
-  </div>
+  
 </p>
 
 
@@ -53,7 +48,7 @@
 <%=f.hidden_field :commit_button, :value => ""%>
 <p>
   
-  <%=f.submit 'Update', :onclick => "document.getElementById('event_commit_button').value = this.value",:class=>"btn  btn-primary"%>
+  <%=f.submit 'Update', :onclick => "document.getElementById('event_commit_button').value = this.value",:class=>"btn  btn-submit"%>
   
   
   <span id = "updating_events" class="spinner" style = "display:none;">Updating, Please wait...</span>
@@ -64,31 +59,37 @@
 
 <script>
 $(function() {
-	$('.timepicker').datetimepicker({
-		format: "HH:ii P",
-        autoclose: true,      
-        minuteStep: 15,   
-        startView: 'day',
-        minView: 'hour',
-        maxView:'day',     
-        showMeridian: true,
-        startDate: new Date(),
-        pickerPosition:  'top-right'
-          
-	});
+	// $('.timepicker').datetimepicker({
+		// format: "HH:ii P",
+        // autoclose: true,      
+        // minuteStep: 15,   
+        // startView: 'day',
+        // minView: 'hour',
+        // maxView:'day',     
+        // showMeridian: true,
+        // startDate: new Date(),
+        // pickerPosition:  'top-right'
+//           
+	// });
+// 	
+	// $('.datepicker').datetimepicker({
+		 // format: "dd MM yyyy",
+         // pickerPosition:  'top-right',
+            // weekStart: 1,
+	        // todayBtn:  0,
+			// autoclose: 1,
+			// todayHighlight: 1,
+			// startView: 2,
+			// minView: 2,
+			// forceParse: 0      
+	// });
 	
-	$('.datepicker').datetimepicker({
-		 format: "dd MM yyyy",
-         pickerPosition:  'top-right',
-            weekStart: 1,
-	        todayBtn:  0,
-			autoclose: 1,
-			todayHighlight: 1,
-			startView: 2,
-			minView: 2,
-			forceParse: 0      
-	});
+	$('.sctimepicker').datetimepicker({
+                    format: 'LT'
+     });
+     $('.scdatepicker').datetimepicker({
+     	format: 'DD/MM/YYYY'
+     });
 	
 }); 
 </script>
-</div></div>

@@ -3,7 +3,7 @@ function moveEvent(event, delta) {
 		data : 'id=' + event.id + '&title=' + event.title + '&hour_delta=' + delta.hours() + '&minute_delta=' + delta.minutes(),
 		dataType : 'script',
 		type : 'post',
-		url : "/events/move"
+		url : "/schedules/move"
 	});
 }
 
@@ -12,17 +12,17 @@ function resizeEvent(event, delta) {
 		data : 'id=' + event.id + '&title=' + event.title + '&hour_delta=' + delta.hours() + '&minute_delta=' + delta.minutes(),
 		dataType : 'script',
 		type : 'post',
-		url : "/events/resize"
+		url : "/schedules/resize"
 	});
 }
 
 function showEventDetails(event) {
 	$("#desc_dialog").find('.modal-header').show();
-	//$('#event_desc').html(event.description);
+	$('#event_desc').empty();
 	$('#edit_event').html("<a href = 'javascript:void(0);' onclick ='editEvent(" + event.id + ")' class='btn btn-sm'>Edit</a>");
 	
 		title = "<h3>"+event.title+"</h3>";
-		title += "<h4>Class: "+event.description.location+"</h4>";
+		title += "<h4>Class: "+event.description.class_name+"</h4>";
 		title += "<h4>Date: "+moment(event.start).format('MM/DD/YYYY')+"</h4>";		
 		title += "<h4>Timings: "+moment(event.start).format('h:mm a')+" - "+moment(event.end).format('h:mm a')+"</h4>";
 		title += "<p>"+event.description.description+"<p>";
@@ -36,11 +36,11 @@ function showEventDetails(event) {
 
 function show_list_events_details (event) {
   $("#desc_dialog").find('.modal-header').show();
-	//$('#event_desc').html(event.description);
+	$('#event_desc').empty();
 	$('#edit_event').html("<a href = 'javascript:void(0);' onclick ='editEvent(" + event.id + ")' class='btn btn-sm'>Edit</a>");
 	
 		title = "<h3>"+event.title+"</h3>";
-		title += "<h4>Class: "+event.location+"</h4>";
+		title += "<h4>Class: "+event.class_name+"</h4>";
 		title += "<h4>Date: "+moment(event.date).format('MM/DD/YYYY')+"</h4>";		
 		title += "<h4>Timings: "+moment(event.starttime).format('h:mm a')+" - "+moment(event.endtime).format('h:mm a')+"</h4>";
 		title += "<p>"+event.description+"<p>";
@@ -54,11 +54,11 @@ function show_list_events_details (event) {
 
 function showEventDetailsUser(event) {
 	$("#desc_dialog").find('.modal-header').show();
-	//$('#event_desc').html(event.description);
+	$('#event_desc').empty();
 	// $('#edit_event').html("<a href = 'javascript:void(0);' onclick ='editEvent(" + event.id + ")' class='btn btn-sm'>Edit</a>");
 
 	    title = "<h3>"+event.title+"</h3>";
-		title += "<h4>Class: "+event.location+"</h4>";
+		title += "<h4>Class: "+event.class_name+"</h4>";
 		title += "<h4>Date: "+moment(event.date).format('MM/DD/YYYY')+"</h4>";		
 		title += "<h4>Timings: "+moment(event.starttime).format('h:mm a')+" - "+moment(event.starttime).format('h:mm a')+"</h4>";
 		title += "<p>"+event.description+"<p>";
@@ -70,8 +70,9 @@ function showEventDetailsUser(event) {
 
 function editEvent(event_id) {
 	jQuery.ajax({
-		url : "/events/" + event_id + "/edit",
+		url : "/schedules/" + event_id + "/edit",
 		success : function(data) {
+			$('#event_desc').empty();
 			$('#event_desc').html(data['form']);
 		}
 	});
@@ -85,9 +86,9 @@ function deleteEvent(event_id, delete_all) {
 			data : '&delete_all=' + delete_all,
 			dataType : 'script',
 			type : 'delete',
-			url : "/events/" + event_id,
+			url : "/schedules/" + event_id,
 			success : refetch_events_and_close_dialog
-		});
+		});		
 	} 
 	
 }
@@ -98,7 +99,7 @@ function refetch_events_and_close_dialog() {
 	$('.modal.fade.in').modal('hide');
 	
 
-	$.get("/events/list_events",{event: {}}, function(data) {
+	$.get("/schedules/list_schedules",{event: {}}, function(data) {
 		$('#eventlisting').empty();
 		$('#eventlisting').html(data);
 
@@ -174,7 +175,7 @@ $(document).ready(function() {
 	});
 });
 
-$(document).on("click",'#new_event',function(event) {
+$(document).on("click",'#new_schedule',function(event) {
 		event.preventDefault();
 		var url = $(this).attr('href');
 		var user_id = $(this).data('userid');
@@ -191,7 +192,7 @@ $(document).on("click",'#new_event',function(event) {
 				$('#eventModalLabel').html('New Schedule');
 				$('#create_event').empty();
 				$('#create_event').html(data['form']);
-				$('#create_event').find("#event_user_id").val(user_id);
+				$('#create_event').find("#schedule_user_id").val(user_id);
 							
 				$('#eventModal').modal('show');  
 			}
@@ -200,7 +201,7 @@ $(document).on("click",'#new_event',function(event) {
 
 $(document).on("click","#eventlist",function(){		
 	var user_id=$("#event_user_id").val();
-	$.get("/events/list_events",{event: {user_id:user_id}},function(data){
+	$.get("/schedules/list_schedules",{schedule: {user_id:user_id}},function(data){
 		$("#eventlisting").empty();
 		$("#eventlisting").html(data);
 	});

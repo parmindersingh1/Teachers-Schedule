@@ -1,5 +1,4 @@
-
-<%= form_for @event, :html => { :id => 'event_form' } do |f| %>
+<%= form_for @schedule, :html => { :id => 'event_form' } do |f| %>
 <p>
   
   <%=f.text_field :title,:class=>"form-control form-white",:placeholder=>"Title" %>
@@ -10,53 +9,49 @@
 </p>
 <p>
  
-  <%=f.text_field :location,:class=>"form-control form-white",:placeholder=>"Class" %>
+  <%=f.text_field :class_name,:class=>"form-control form-white",:placeholder=>"Class" %>
 </p>
 
 <p>
+ 
   
- <div class='input-group date scdatepicker' >
-  <%=f.text_field :date,:class=>"form-control form-white" ,:value=> DateTime.now.strftime("%d/%m/%Y ") %>
+  	 <div class='input-group date scdatepicker ' >
+  <%=f.text_field :date,:class=>"form-control form-white" ,:value=> DateTime.now.strftime("%d/%m/%Y "),:placeholder=>"Date" %>
   <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
    </div>
   
 </p>
 
+
 <p>
   
+ 
   	 <div class='input-group date sctimepicker' >
-  <%=f.text_field :starttime,:class=>"form-control form-white",:value => @event.starttime.strftime("%I:%M %p ") %>
-  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+  <%=f.text_field :starttime,:class=>"form-control form-white " ,:value=> DateTime.now.strftime("%I:%M %p "),:placeholder=>"Start Time" %>
+  <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
    </div>
   
 </p>
 <p>
   
-  	 <div class='input-group date sctimepicker' >
-  <%=f.text_field :endtime,:class=>"form-control form-white",:value => @event.endtime.in_time_zone(Time.zone).strftime("%I:%M %p ") %>
-  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+
+  	 <div class='input-group date sctimepicker'>
+  <%=f.text_field :endtime,:class=>"form-control form-white", :value=> (DateTime.now+ 1.hours).strftime("%I:%M %p "),:placeholder=>"End Time"%>
+  <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
    </div>
   
 </p>
-
-
-
-  
-
-
-<%=f.hidden_field :id, :value => @event.id%>
-<%=f.hidden_field :commit_button, :value => ""%>
+<%=f.hidden_field :user_id, :value => @user_id %>
+<%=f.hidden_field :id, :value => @schedule.id %>
 <p>
-  
-  <%=f.submit 'Update', :onclick => "document.getElementById('event_commit_button').value = this.value",:class=>"btn  btn-submit"%>
-  
-  
-  <span id = "updating_events" class="spinner" style = "display:none;">Updating, Please wait...</span>
+  <%=f.submit 'Create',:class=>"btn  btn-submit" %> <span id = "creating_schedules" class="spinner" style = "display:none;">Creating, Please wait...</span>
 </p>
+ 
 </div>
-	</div>
-<%end %>
 
+
+
+<%end %>
 <script>
 $(function() {
 	// $('.timepicker').datetimepicker({
@@ -93,3 +88,4 @@ $(function() {
 	
 }); 
 </script>
+

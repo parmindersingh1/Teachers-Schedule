@@ -1,5 +1,4 @@
-class Event < ActiveRecord::Base
-  belongs_to :event_series
+class Schedule < ActiveRecord::Base  
   belongs_to :user
   
   attr_accessor  :commit_button

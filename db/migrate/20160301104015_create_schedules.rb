@@ -1,15 +1,13 @@
-class CreateEvents < ActiveRecord::Migration
+class CreateSchedules < ActiveRecord::Migration
   def change
-   create_table :events do |t|
+   create_table :schedules do |t|
       t.string :title
       t.string :description
       t.date :date
       t.time :starttime
       t.time :endtime
-      # t.boolean :all_day, :default => false
       t.references :user, index: true
-      t.string :location
-      # t.string :time_zone
+      t.string :class_name, :limit => 12
 
       t.timestamps
     end

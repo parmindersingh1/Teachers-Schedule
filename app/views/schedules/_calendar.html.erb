@@ -26,10 +26,12 @@ function call_calendar(user_id) {
 			allDaySlot : false,
 			slotDuration : '00:15:00',
 			// eventDurationEditable: false,
+			editable: false, // Don't allow editing of events
+			handleWindowResize: true,
 			header : {
 				left : 'prev,next today',
 				center : 'title',
-				right : 'month,agendaWeek,agendaDay'
+				right : 'agendaWeek,agendaDay'
 			},
 			defaultView : 'agendaDay',
 		    height : "auto",
@@ -42,7 +44,7 @@ function call_calendar(user_id) {
 			},
 
 			events : {
-				url : '/events/get_events.json',
+				url : '/schedules/get_schedules.json',
 				data : {
 					"user_id" : user_id
 					},

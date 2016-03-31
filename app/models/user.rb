@@ -7,13 +7,17 @@ class User < ActiveRecord::Base
   validates :username,  :uniqueness => { :case_sensitive => false }
   validates :first_name, :presence => true
         
-  has_many :events, dependent: :destroy
+  has_many :schedules, dependent: :destroy
   
   ROLES = [ENV["ROLE_ADMIN"], ENV["ROLE_USER"]]
   
   before_create :user_role
   def login=(login)
     @login = login
+  end
+  
+  def full_name
+    self.first_name+' '+self.last_name
   end
 
   def login

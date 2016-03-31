@@ -16,3 +16,15 @@
       :mobile                => "9111111111"      
   )
   @user1.save!
+  
+@user2 = User.new(
+      :username              => "employee", 
+      :email                 => "xyz@gmail.com",
+      :password              => "password",
+      :password_confirmation => "password",
+      :role                  => "employee" ,
+      :first_name            => "Harry ",
+      :last_name             => "Potter",
+      :mobile                => "9222222222"      
+  )
+  @user2.save!

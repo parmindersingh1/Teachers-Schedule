@@ -1114,7 +1114,9 @@ footer .social-footer li:hover a {
 	}
 }
 
-
+nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+ background-color: transparent;	
+}
 
 /*.input-group .input-group-addon {
      line-height: 1!important;

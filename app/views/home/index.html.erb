@@ -7,14 +7,14 @@
 				<div class="intro-table intro-table-first">
 					<h5 class="white heading">Today's Schedule</h5>
 					<div class="owl-carousel owl-schedule bottom">
-
+						<%unless @today_schedules.blank?%>
 						<% @today_schedules.in_groups_of(3).each do |group| %>
 						<div class="item">
 							<% group.each do |sc| %>
 							<%unless sc.nil?%>
 							<div class="schedule-row row">
 								<div class="col-xs-6">
-									<h5 class="regular white"><%= sc.location%></h5>
+									<h5 class="regular white"><%= sc.class_name%></h5>
 								</div>
 								<div class="col-xs-6 text-right">
 									<h5 class="white"><%= sc.starttime.strftime("%I:%M")%> - <%= sc.endtime.strftime("%I:%M")%></h5>
@@ -24,6 +24,13 @@
 							<%end%>
 						</div>
 
+						<%end%>
+						<%else%>
+						<div class="item">
+							<div class="col-xs-6">
+								<h5 class="regular white">No Schedule Found</h5>
+							</div>
+						</div>
 						<%end%>
 					</div>
 				</div>
@@ -35,7 +42,7 @@
 					<div class="bottom">
 						<h4 class="white heading small-heading no-margin regular">My Schedules</h4>
 						<!-- <h4 class="white heading small-pt">20% Discount</h4> -->
-						<%= link_to "Schedules", events_path, :class=>"btn btn-white-fill expand"%>
+						<%= link_to "Schedules", schedules_path, :class=>"btn btn-white-fill expand"%>
 						<!-- <a href="#" class="btn btn-white-fill expand">Schedules</a> -->
 					</div>
 				</div>

@@ -166,9 +166,10 @@ jQuery(function($) {
 
 	$('.modal').on('show.bs.modal', centerModal);
 
-	$('.modal-popup .close-link').click(function(event){
+	$('.modal-popup a.close-link').click(function(event){
 		event.preventDefault();
-		$('#modal1').modal('hide');
+		var modal = $(this).closest('.modal');
+		modal.modal('hide');
 	});
 
 	$(window).on("resize", function() {

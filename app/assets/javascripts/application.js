@@ -24,7 +24,7 @@
 //= require typewriter
 //= require jquery.onepagenav
 //= require main
-//= require events
+//= require schedules
 //= require_tree .
 
 

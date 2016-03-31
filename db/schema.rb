@@ -13,19 +13,19 @@
 
 ActiveRecord::Schema.define(version: 20160301104015) do
 
-  create_table "events", force: :cascade do |t|
+  create_table "schedules", force: :cascade do |t|
     t.string   "title",       limit: 255
     t.string   "description", limit: 255
     t.date     "date"
     t.time     "starttime"
     t.time     "endtime"
     t.integer  "user_id",     limit: 4
-    t.string   "location",    limit: 255
+    t.string   "class_name",  limit: 12
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "events", ["user_id"], name: "index_events_on_user_id", using: :btree
+  add_index "schedules", ["user_id"], name: "index_schedules_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  limit: 255, default: "", null: false

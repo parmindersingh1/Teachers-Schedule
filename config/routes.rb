@@ -1,13 +1,13 @@
 Rails.application.routes.draw do
   get 'home/index'
 
-  resources :events,  :except => :show do
+  resources :schedules,  :except => :show do
      collection do 
-      get :get_events
+      get :get_schedules
       post :move
       post :resize
       get :get_dateupto
-      get :list_events
+      get :list_schedules
       post :get_user_schedules
       get :get_user_history_schedules
       post :update_json

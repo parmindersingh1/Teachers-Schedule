@@ -30,7 +30,9 @@
 				         <% if current_user.role == ENV["ROLE_ADMIN"]%>
 				        <li><%=link_to "Users", admin_panel_users_path%></li>
 				        <%end%> 		
-				        <li><%=link_to "Schedules", schedules_path%></li>		      
+				        <li><%=link_to "Schedules", schedules_path%></li>	
+				        <li><%=link_to "History", history_schedules_path%></li>	
+				         	      
 				   <%end%>
 					
 					

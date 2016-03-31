@@ -41,7 +41,7 @@ class SchedulesController < ApplicationController
     else
       @user_id=current_user.id
     end 
-    @schedules = Schedule.where("date >= '#{DateTime.parse(params['start']).to_formatted_s(:db)}' and date <= '#{DateTime.parse(params['end']).to_formatted_s(:db)}' and user_id=#{@user_id}" )
+    @schedules = Schedule.where("date >='#{Time.now.at_beginning_of_day.to_formatted_s(:db)}' and user_id=#{@user_id}" ).order('starttime ASC')
     
     schedules = [] 
     @schedules.each do |schedule|
@@ -55,6 +55,30 @@ class SchedulesController < ApplicationController
     end   
   end
   
+  
+   def list_schedules    
+    @user_id=""   
+    unless schedule_params.blank? || schedule_params[:user_id].nil?
+      @user_id=schedule_params[:user_id]
+    else
+      @user_id=current_user.id
+    end
+    @schedules= Schedule.where("date >='#{Time.now.at_beginning_of_day.to_formatted_s(:db)}' and user_id=#{@user_id}").order('starttime ASC')
+    # @schedules=@events.paginate(:page => params[:page] || 1,:per_page => 20)
+    
+    render :partial=>"listschedules"    
+    
+  end
+  
+  def history
+    @user=""
+    unless params.nil? || params[:user_id].nil?
+      @user=User.find_by_id(params[:user_id])
+    else
+      @user=current_user
+    end
+    @schedules= Schedule.where("user_id=#{@user.id} and date <'#{ Time.now.at_beginning_of_day.to_formatted_s(:db)}'").order(:date => :desc, :starttime => :asc)
+  end
   
   
   def move
@@ -100,43 +124,29 @@ class SchedulesController < ApplicationController
   
   
   
-  def list_schedules    
-    @user_id=""   
-    unless schedule_params.blank? || schedule_params[:user_id].nil?
-      @user_id=schedule_params[:user_id]
-    else
-      @user_id=current_user.id
-    end
-    @schedules= Schedule.where("user_id=#{@user_id}").order('starttime DESC')
-    # @schedules=@events.paginate(:page => params[:page] || 1,:per_page => 20)
-    
-    render :partial=>"listschedules"    
-    
-  end
+ 
   
   def get_user_schedules
-    d = Time.now
     @user=""
     unless schedule_params.nil? && schedule_params[:user_id].nil?
       @user=User.find_by_id(schedule_params[:user_id])
     else
       @user=current_user
     end
-    @schedules= Schedule.where("user_id=#{@user.id} and date >='#{d.at_beginning_of_day.to_formatted_s(:db)}'").order(:date => :asc, :starttime => :asc)
+    @schedules= Schedule.where("user_id=#{@user.id} and date >='#{Time.now.at_beginning_of_day.to_formatted_s(:db)}'").order(:date => :asc, :starttime => :asc)
       
    render :json=>{:schedules=>@schedules.to_json(:include => :user ), :success=> true, :message=> "Success"}
      
   end
   
   def get_user_history_schedules
-    d = Time.now
-    @user=""
+   @user=""
     unless params.nil? && params[:user_id].nil?
       @user=User.find_by_id(params[:user_id])
     else
       @user=current_user
     end
-    @schedules= Schedule.where("user_id=#{@user.id} and date <'#{d.at_beginning_of_day.to_formatted_s(:db)}'").order(:date => :desc, :starttime => :asc)
+    @schedules= Schedule.where("user_id=#{@user.id} and date <'#{ Time.now.at_beginning_of_day.to_formatted_s(:db)}'").order(:date => :desc, :starttime => :asc)
    render :json=>{:schedules=>@schedules.to_json(:include => :user ), :success=> true, :message=> "Success"}
        
   end

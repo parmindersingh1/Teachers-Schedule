@@ -1,6 +1,6 @@
 <div class="row text-center title">
 				<h2>Schedule</h2>
-				<% if @user.role == ENV["ROLE_ADMIN"]%>
+				<% if current_user.role == ENV["ROLE_ADMIN"]%>
 				<h4 class="light muted"><%=@user.full_name%></h4>
 				<%end%>
 </div>

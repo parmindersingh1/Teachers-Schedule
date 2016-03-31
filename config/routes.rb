@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       get :get_user_history_schedules
       post :update_json
       post :destroy_json
+      get :history
     end
   end
   

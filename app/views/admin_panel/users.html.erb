@@ -1,4 +1,6 @@
-<h1>Listing Users</h1>
+<div class="row text-center title">
+				<h2>Users</h2>
+</div>
 
 <table class="table" id="userTable">
   <thead>
@@ -16,12 +18,15 @@
   <tbody>
     <% @users.each do |user| %>
       <tr>
-        <td><%=link_to user.username,schedules_path(:user_id => user.id) %></td>
+        <td><%= user.username%></td>
         <td><%= user.first_name %></td>        
         <td><%= user.last_name %></td>
         <td><%= user.role%></td>
         <% if current_user.role == ENV["ROLE_ADMIN"]%>
-       	 <td><%=link_to "Edit Role",admin_panel_edit_role_path(:user=> user) %></td>
+       	 <td><%=link_to "Edit Role",admin_panel_edit_role_path(:user=> user) %> |
+       	 	<%=link_to "Schedule",schedules_path(:user_id => user.id) %> |
+       	 	<%= link_to "History", history_schedules_path(:user_id => user.id)%> 
+       	 </td>
        <%end%>
       </tr>
     <% end %>

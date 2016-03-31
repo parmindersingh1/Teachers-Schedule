@@ -19,8 +19,7 @@ class SchedulesController < ApplicationController
         else
           format.html  {render :text => schedule.errors.full_messages.to_sentence, :status => 422}
           format.json {render :json => { :success => false, :message => schedule.errors.full_messages} }
-        end    
-    format.json 
+        end   
     end 
   end
   

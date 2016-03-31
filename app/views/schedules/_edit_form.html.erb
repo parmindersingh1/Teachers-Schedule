@@ -85,10 +85,12 @@ $(function() {
 	// });
 	
 	$('.sctimepicker').datetimepicker({
-                    format: 'LT'
+                    format: 'LT',
+                    stepping: 15
      });
      $('.scdatepicker').datetimepicker({
-     	format: 'DD/MM/YYYY'
+     	format: 'DD/MM/YYYY',
+     	minDate:new Date()
      });
 	
 }); 
